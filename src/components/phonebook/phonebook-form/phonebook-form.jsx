@@ -1,13 +1,26 @@
-import { Formik, Field, Form } from 'formik';
+import { Formik,Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { AddButton, Form } from './phonebook-form.styled';
+
+const contactSchema = Yup.object().shape({
+  userName: Yup.string()
+    .min(2,'Must be a word of at least 2 characters')
+    .required('Required'),
+  userNumber: Yup.string()
+    .min(9,'Must be a number format of ***-**-**')
+    .max(9,'Must be a number format of ***-**-**')
+    .required('Required'),
+});
 
 export const ContactForm = ({onAddContact}) => (
-  <div>
+  <>
     <Formik
       initialValues = {{
         userName: '',
         userNumber: '',
       }}
 
+      validationSchema={contactSchema}
       onSubmit={({ userName, userNumber }, actions) => {
         onAddContact(userName, userNumber);
         actions.resetForm();
@@ -15,14 +28,19 @@ export const ContactForm = ({onAddContact}) => (
       }
     >
       <Form>
-        <label htmlFor="userName">Name</label>
-        <Field id="userName" name="userName" placeholder="Jane" />
+        <label htmlFor="userName">Name
+          <Field id="userName" type="text" name="userName"/>
+          <ErrorMessage name="userName"/>
+        </label>
 
-        <label htmlFor="userNumber">Number</label>
-        <Field id="userNumber" name="userNumber" placeholder="Doe" />
+        <label htmlFor="userNumber">Number
+          <Field id="userNumber" name="userNumber"/>
+          <ErrorMessage name="userNumber"/>
+        </label>
+        
 
-        <button type="submit">Add contact</button>
+        <AddButton type="submit">Add contact</AddButton>
       </Form>
     </Formik>
-  </div>
+  </>
 );

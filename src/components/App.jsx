@@ -17,10 +17,11 @@ export class App extends Component {
     const { contacts } = this.state;
     const exsistContact = contacts.find(contact => contact.name === contactName);
 
-    !exsistContact ? this.setState(prevState => {
+    exsistContact ? alert(`${contactName} is already in contacts`)
+      : this.setState(prevState => {
       const newContacts = [...prevState.contacts, { id: nanoid(), name: contactName, number: contactNumber }];
       return { contacts: newContacts }
-    }) : alert(`${contactName} is already in contacts`);
+    })
   }
 
   updateFilter = (filterName) => {
@@ -39,7 +40,7 @@ export class App extends Component {
   render() {
     const { contacts, filter } = this.state;
 
-    const visibleContacts = contacts.filter(contact => {
+    const filtredContacts = contacts.filter(contact => {
       return contact.name
         .toLowerCase()
         .includes(filter.toLowerCase())
@@ -50,7 +51,7 @@ export class App extends Component {
         <ContactForm onAddContact={this.addContact} />
         <h2>Contacts</h2>
         <Filter filter={filter} updateFilter={this.updateFilter}/>
-        <ContactList contacts={visibleContacts} onDelete={this.deleteContact}/>
+        <ContactList contacts={filtredContacts} onDelete={this.deleteContact}/>
 
       </>);
   }
