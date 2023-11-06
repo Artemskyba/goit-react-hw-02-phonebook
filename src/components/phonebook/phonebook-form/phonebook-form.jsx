@@ -7,8 +7,7 @@ const contactSchema = Yup.object().shape({
     .min(2,'Must be a word of at least 2 characters')
     .required('Required'),
   userNumber: Yup.string()
-    .min(9,'Must be a number format of ***-**-**')
-    .max(9,'Must be a number format of ***-**-**')
+    .matches(/^[0-9]{3}-[0-9]{2}-[0-9]{2}$/, 'Must be a number format of 123-45-67')
     .required('Required'),
 });
 
